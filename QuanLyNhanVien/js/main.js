@@ -26,14 +26,18 @@ Staff.prototype.tongLuong = function () {
     return this.luongCB;
   }
 };
-Staff.prototype.xepLoai = function (rank) {
+Staff.prototype.xepLoai = function () {
   if (this.gioLam >= 192) {
-    return (rank.innerHTML = "Nhân viên Xuất Sắc");
+    return "Nhân viên Xuất Sắc";
   } else if (this.gioLam >= 176) {
-    return (rank.innerHTML = "Nhân viên giỏi");
+    return "Nhân viên giỏi";
   } else if (this.gioLam >= 160) {
-    return (rank.innerHTML = "khá");
+    return "Nhân viên khá";
+  } else if (this.gioLam < 160) {
+    return "Nhân viên trung bình";
   }
+
+  console.log(this.gioLam);
 };
 //*************************************************************** */
 let staffs = [];
@@ -98,6 +102,11 @@ function updateStaff() {
   let chucvu = dom("#chucvu").value;
   let giolam = dom("#gioLam").value;
 
+  let isValid = validateForm();
+  if (!isValid) {
+    return;
+  }
+
   let staff = new Staff(
     tknv,
     name,
@@ -121,7 +130,24 @@ function deleteStaff(staffTK) {
   });
   display(staffs);
 }
-
+function searchStaff() {
+  //DOM
+  let searchValue = dom("#searchName").value;
+  if (!searchValue) {
+    display(staffs);
+    return;
+  }
+  searchValue = searchValue.toLowerCase();
+  console.log(searchValue);
+  // Dùng hàm filter để lọc ra các sinh viên có tên khớp với giá trị tìm kiếm
+  // Lưu ý: cần tạo ra một biến mới để gán kết quả từ hàm filter, vì nếu sử dụng biến students sẽ bị mất dữ liệu
+  let newStaffs = staffs.filter((staff) => {
+    let loai = staff.xepLoai().toLowerCase();
+    // includes là hàm kiểm tra 1 chuỗi có phải là chuỗi con
+    return loai.includes(searchValue);
+  });
+  display(newStaffs);
+}
 //=========================================================
 function dom(selector) {
   return document.querySelector(selector);
@@ -153,9 +179,6 @@ function display(staffs) {
     <button class="btn btn-success" onclick="selectStaff('${
       staff.tknv
     }')">Edit</button>
-    </button>
-    </td>
-    <td>
     <button class="btn btn-danger" onclick="deleteStaff('${
       staff.tknv
     }')">Delete</button>
@@ -282,8 +305,12 @@ function validateChucVu() {
   let chucVu = dom("#chucvu").value;
   let spanEl = dom("#tbChucVu");
   spanEl.style.display = "block";
-  if (chucVu === "0") {
+  if (!chucVu) {
+    spanEl.innerHTML = "Chức vụ Không được để trống";
+    return false;
+  } else if (chucVu === "0") {
     spanEl.innerHTML = "Vui Lòng chọn chức vụ";
+    return false;
   } else {
     spanEl.innerHTML = "";
     return true;
@@ -322,6 +349,4 @@ function validateForm() {
   return true;
 }
 //- chưa làm được:
-//  + câu 6
-// + câu 8
-// + câu 9
+// Cập Nhật nhân viên
