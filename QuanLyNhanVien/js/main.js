@@ -18,11 +18,11 @@ function Staff(
   this.gioLam = gioLam;
 }
 Staff.prototype.tongLuong = function () {
-  if (this.chucvu === "1") {
+  if (this.chucvu === "Giám Đốc") {
     return this.luongCB * 3;
-  } else if (this.chucvu === "2") {
+  } else if (this.chucvu === "Trưởng Phòng") {
     return this.luongCB * 2;
-  } else if (this.chucvu === "3") {
+  } else if (this.chucvu === "Nhân Viên") {
     return this.luongCB;
   }
 };
@@ -126,17 +126,17 @@ function deleteStaff(staffTK) {
 function dom(selector) {
   return document.querySelector(selector);
 }
-// function display(staffs) {
-//   let html = staffs.reduce((result, staff) => {
-//     let chucvu = "";
-//     if (staff.chucvu === "1") {
-//       chucvu = "Giám Đốc";
-//     } else if (staff.chucvu === "2") {
-//       chucvu = "Trưởng Phòng";
-//     } else if (staff.chucvu === "3") {
-//       chucvu = "Nhân Viên";
-//     }
-//     console.log(chucvu);
+function display(staffs) {
+  let html = staffs.reduce((result, staff) => {
+    let chucvu = "";
+    if (staff.chucvu === "1") {
+      staff.chucvu = "Giám Đốc";
+    } else if (staff.chucvu === "2") {
+      staff.chucvu = "Trưởng Phòng";
+    } else if (staff.chucvu === "3") {
+      staff.chucvu = "Nhân Viên";
+    }
+    console.log(chucvu);
 
     return (
       result +
@@ -322,7 +322,6 @@ function validateForm() {
   return true;
 }
 //- chưa làm được:
-//  + xuất text của option chucvu
 //  + câu 6
 // + câu 8
 // + câu 9
